@@ -9,32 +9,33 @@ export interface AminoAcid {
   three: string; // 3文字略称（例: Phe）。終止コドンは "Stop"
   one: string; // 1文字略称（例: F）。終止コドンは "*"
   name: string; // 英語の正式名称（例: Phenylalanine）。終止コドンは "Stop (terminator)"
+  ja: string; // 日本語名（例: フェニルアラニン）
 }
 
 // 各コドン（キーは "UUU" 形式）に対応するアミノ酸
 export const CODON_TABLE: Record<string, AminoAcid> = (() => {
   const aa = {
-    Phe: { three: "Phe", one: "F", name: "Phenylalanine" },
-    Leu: { three: "Leu", one: "L", name: "Leucine" },
-    Ile: { three: "Ile", one: "I", name: "Isoleucine" },
-    Met: { three: "Met", one: "M", name: "Methionine" },
-    Val: { three: "Val", one: "V", name: "Valine" },
-    Ser: { three: "Ser", one: "S", name: "Serine" },
-    Pro: { three: "Pro", one: "P", name: "Proline" },
-    Thr: { three: "Thr", one: "T", name: "Threonine" },
-    Ala: { three: "Ala", one: "A", name: "Alanine" },
-    Tyr: { three: "Tyr", one: "Y", name: "Tyrosine" },
-    His: { three: "His", one: "H", name: "Histidine" },
-    Gln: { three: "Gln", one: "Q", name: "Glutamine" },
-    Asn: { three: "Asn", one: "N", name: "Asparagine" },
-    Lys: { three: "Lys", one: "K", name: "Lysine" },
-    Asp: { three: "Asp", one: "D", name: "Aspartic acid" },
-    Glu: { three: "Glu", one: "E", name: "Glutamic acid" },
-    Cys: { three: "Cys", one: "C", name: "Cysteine" },
-    Trp: { three: "Trp", one: "W", name: "Tryptophan" },
-    Arg: { three: "Arg", one: "R", name: "Arginine" },
-    Gly: { three: "Gly", one: "G", name: "Glycine" },
-    Stop: { three: "Stop", one: "*", name: "Stop (terminator)" },
+    Phe: { three: "Phe", one: "F", name: "Phenylalanine", ja: "フェニルアラニン" },
+    Leu: { three: "Leu", one: "L", name: "Leucine", ja: "ロイシン" },
+    Ile: { three: "Ile", one: "I", name: "Isoleucine", ja: "イソロイシン" },
+    Met: { three: "Met", one: "M", name: "Methionine", ja: "メチオニン" },
+    Val: { three: "Val", one: "V", name: "Valine", ja: "バリン" },
+    Ser: { three: "Ser", one: "S", name: "Serine", ja: "セリン" },
+    Pro: { three: "Pro", one: "P", name: "Proline", ja: "プロリン" },
+    Thr: { three: "Thr", one: "T", name: "Threonine", ja: "トレオニン" },
+    Ala: { three: "Ala", one: "A", name: "Alanine", ja: "アラニン" },
+    Tyr: { three: "Tyr", one: "Y", name: "Tyrosine", ja: "チロシン" },
+    His: { three: "His", one: "H", name: "Histidine", ja: "ヒスチジン" },
+    Gln: { three: "Gln", one: "Q", name: "Glutamine", ja: "グルタミン" },
+    Asn: { three: "Asn", one: "N", name: "Asparagine", ja: "アスパラギン" },
+    Lys: { three: "Lys", one: "K", name: "Lysine", ja: "リシン" },
+    Asp: { three: "Asp", one: "D", name: "Aspartic Acid", ja: "アスパラギン酸" },
+    Glu: { three: "Glu", one: "E", name: "Glutamic Acid", ja: "グルタミン酸" },
+    Cys: { three: "Cys", one: "C", name: "Cysteine", ja: "システイン" },
+    Trp: { three: "Trp", one: "W", name: "Tryptophan", ja: "トリプトファン" },
+    Arg: { three: "Arg", one: "R", name: "Arginine", ja: "アルギニン" },
+    Gly: { three: "Gly", one: "G", name: "Glycine", ja: "グリシン" },
+    Stop: { three: "Stop", one: "*", name: "Stop (terminator)", ja: "終止コドン" },
   } as const;
 
   return {
@@ -63,27 +64,26 @@ export const CODON_TABLE: Record<string, AminoAcid> = (() => {
 
 // 下の表（20アミノ酸 + Stop）の一覧。表示順を固定
 export const AMINO_ACID_LIST: AminoAcid[] = [
-  { three: "Ala", one: "A", name: "Alanine" },
-  { three: "Arg", one: "R", name: "Arginine" },
-  { three: "Asn", one: "N", name: "Asparagine" },
-  { three: "Asp", one: "D", name: "Aspartic acid" },
-  { three: "Cys", one: "C", name: "Cysteine" },
-  { three: "Gln", one: "Q", name: "Glutamine" },
-  { three: "Glu", one: "E", name: "Glutamic acid" },
-  { three: "Gly", one: "G", name: "Glycine" },
-  { three: "His", one: "H", name: "Histidine" },
-  { three: "Ile", one: "I", name: "Isoleucine" },
-  { three: "Leu", one: "L", name: "Leucine" },
-  { three: "Lys", one: "K", name: "Lysine" },
-  { three: "Met", one: "M", name: "Methionine" },
-  { three: "Phe", one: "F", name: "Phenylalanine" },
-  { three: "Pro", one: "P", name: "Proline" },
-  { three: "Ser", one: "S", name: "Serine" },
-  { three: "Thr", one: "T", name: "Threonine" },
-  { three: "Trp", one: "W", name: "Tryptophan" },
-  { three: "Tyr", one: "Y", name: "Tyrosine" },
-  { three: "Val", one: "V", name: "Valine" },
-  { three: "Stop", one: "*", name: "Stop (terminator)" },
+  { three: "Ala", one: "A", name: "Alanine", ja: "アラニン" },
+  { three: "Arg", one: "R", name: "Arginine", ja: "アルギニン" },
+  { three: "Asn", one: "N", name: "Asparagine", ja: "アスパラギン" },
+  { three: "Asp", one: "D", name: "Aspartic Acid", ja: "アスパラギン酸" },
+  { three: "Cys", one: "C", name: "Cysteine", ja: "システイン" },
+  { three: "Gln", one: "Q", name: "Glutamine", ja: "グルタミン" },
+  { three: "Glu", one: "E", name: "Glutamic Acid", ja: "グルタミン酸" },
+  { three: "Gly", one: "G", name: "Glycine", ja: "グリシン" },
+  { three: "His", one: "H", name: "Histidine", ja: "ヒスチジン" },
+  { three: "Ile", one: "I", name: "Isoleucine", ja: "イソロイシン" },
+  { three: "Leu", one: "L", name: "Leucine", ja: "ロイシン" },
+  { three: "Lys", one: "K", name: "Lysine", ja: "リシン" },
+  { three: "Met", one: "M", name: "Methionine", ja: "メチオニン" },
+  { three: "Phe", one: "F", name: "Phenylalanine", ja: "フェニルアラニン" },
+  { three: "Pro", one: "P", name: "Proline", ja: "プロリン" },
+  { three: "Ser", one: "S", name: "Serine", ja: "セリン" },
+  { three: "Thr", one: "T", name: "Threonine", ja: "トレオニン" },
+  { three: "Trp", one: "W", name: "Tryptophan", ja: "トリプトファン" },
+  { three: "Tyr", one: "Y", name: "Tyrosine", ja: "チロシン" },
+  { three: "Val", one: "V", name: "Valine", ja: "バリン" },
 ];
 
 // 正規化して比較（大文字小文字・前後空白を無視）

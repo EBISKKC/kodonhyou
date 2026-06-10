@@ -1,6 +1,6 @@
 "use client";
 
-import { BASES, Base, CODON_TABLE, normalize } from "@/lib/codonData";
+import { BASES, CODON_TABLE, normalize } from "@/lib/codonData";
 
 type Mode = "study" | "test";
 
@@ -24,9 +24,19 @@ function cellStateClass(
 
 type AnswerState = "correct" | "wrong" | "empty";
 
-function judge(input: string, expected: string): AnswerState {
-  if (normalize(input) === "") return "empty";
-  return normalize(input) === normalize(expected) ? "correct" : "wrong";
+// 終止コドンは "Stop"、それ以外は 1 文字略称で判定。
+// 終止コドンは "*" も許容する。
+function judge(input: string, aa: { one: string; three: string }): AnswerState {
+  const v = normalize(input);
+  if (v === "") return "empty";
+  const isStop = aa.three === "Stop";
+  const accepted = isStop ? ["stop", "*"] : [normalize(aa.one)];
+  return accepted.includes(v) ? "correct" : "wrong";
+}
+
+// 表示用の正解ラベル（終止コドンは "Stop"、それ以外は 1 文字略称）
+function expectedLabel(aa: { one: string; three: string }): string {
+  return aa.three === "Stop" ? "Stop" : aa.one;
 }
 
 export default function CodonTable({ mode, answers, onChange, graded }: Props) {
@@ -85,7 +95,9 @@ export default function CodonTable({ mode, answers, onChange, graded }: Props) {
                   const codon = `${first}${second}${third}`;
                   const aa = CODON_TABLE[codon];
                   const value = answers[codon] ?? "";
-                  const state = judge(value, aa.three);
+                  const state = judge(value, aa);
+                  const label = expectedLabel(aa);
+                  const isStop = aa.three === "Stop";
                   return (
                     <td
                       key={codon}
@@ -99,23 +111,22 @@ export default function CodonTable({ mode, answers, onChange, graded }: Props) {
                           type="text"
                           value={value}
                           onChange={(e) => onChange(codon, e.target.value)}
-                          placeholder={aa.three === "Stop" ? "Stop" : "___"}
-                          className={`w-14 rounded border px-1 py-0.5 text-center text-xs outline-none focus:border-blue-500 ${cellStateClass(
-                            graded,
-                            state
-                          )}`}
+                          placeholder={isStop ? "Stop" : "_"}
+                          className={`rounded border px-1 py-0.5 text-center text-xs outline-none focus:border-blue-500 ${
+                            isStop ? "w-14" : "w-10"
+                          } ${cellStateClass(graded, state)}`}
                         />
                       </div>
                       {/* 暗記モードでは答えを薄く表示 */}
                       {mode === "study" && (
                         <div className="text-center text-[10px] text-blue-600">
-                          {aa.three}
+                          {label}
                         </div>
                       )}
                       {/* 採点後、間違いには正解を表示 */}
                       {graded && state === "wrong" && (
                         <div className="text-center text-[10px] text-red-600">
-                          → {aa.three}
+                          → {label}
                         </div>
                       )}
                     </td>
